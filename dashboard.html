@@ -1,0 +1,406 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CITL Form Fill</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f4f2f8;color:#292333}
+header{background:#4b2e83;color:white;padding:20px 30px;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+header h1{margin:0;font-size:26px}
+header p{margin:6px 0 0;font-size:14px}
+.nav-button{display:inline-block;background:white;color:#4b2e83;padding:11px 16px;border-radius:6px;text-decoration:none;font-weight:bold;font-size:14px}
+.nav-button:hover{background:#eee8f8}
+.container{max-width:1250px;margin:25px auto;padding:0 20px;display:grid;grid-template-columns:290px minmax(0,1fr);gap:25px;align-items:start}
+.resources-panel,.form-card{background:white;padding:22px;border-radius:12px;box-shadow:0 3px 12px #00000012}
+.resources-panel h2,.form-card h2{color:#4b2e83;margin-top:0}
+.resource-card{background:#f8f6fc;border-left:4px solid #4b2e83;padding:13px;margin-bottom:15px;border-radius:5px}
+.resource-card h3{font-size:15px;margin:0 0 10px;color:#4b2e83}
+.resource-card ul{margin:0;padding-left:18px}
+.resource-card li{font-size:13px;line-height:1.5;margin-bottom:5px}
+.resource-card a{display:block;color:#4b2e83;font-size:13px;margin-top:9px;overflow-wrap:anywhere}
+.resource-note{font-size:12px;color:#625a6d;line-height:1.5}
+.extension-table{width:100%;border-collapse:collapse;font-size:12px}
+.extension-table th{background:#4b2e83;color:white;text-align:left;padding:9px 6px}
+.extension-table td{padding:9px 6px;border-bottom:1px solid #ded8e8;overflow-wrap:anywhere}
+.extension-table tbody tr:nth-child(even){background:#f1edf8}
+.question{margin-bottom:25px}
+.question label,.question legend{display:block;font-weight:bold;margin-bottom:10px}
+fieldset.question{border:0;padding:0;min-width:0}
+input[type=text],input[type=email],textarea{width:100%;padding:12px;border:1px solid #cfc8dc;border-radius:6px;font:14px Arial;background:white}
+input:focus,textarea:focus{outline:2px solid #9b85c4;border-color:#4b2e83}
+textarea{min-height:125px;resize:vertical}
+.button-group{display:flex;flex-wrap:wrap;gap:10px}
+.choice-button{padding:11px 16px;border:1px solid #4b2e83;background:white;color:#4b2e83;border-radius:6px;cursor:pointer;font-size:14px}
+.choice-button:hover{background:#eee8f8}
+.choice-button.selected{background:#4b2e83;color:white}
+.conditional-field{margin-top:15px}
+.hidden{display:none!important}
+.submit-button{width:100%;padding:14px;background:#4b2e83;color:white;border:0;border-radius:6px;font-size:16px;font-weight:bold;cursor:pointer}
+.submit-button:hover{background:#38205f}
+.status-message{font-size:14px;line-height:1.5;margin-top:15px}
+footer{text-align:center;color:#625a6d;font-size:12px;padding:15px}
+@media(max-width:850px){.container{grid-template-columns:1fr}.form-column{order:1}.resources-panel{order:2}.form-card{padding:20px}}
+</style>
+</head>
+<body>
+
+<header>
+    <div>
+        <h1>CITL Form Fill</h1>
+        <p>Technology Support Call Records</p>
+    </div>
+    <a class="nav-button" href="reports.html">Submitted Reports →</a>
+</header>
+
+<main class="container">
+<!-- LEFT SIDEBAR -->
+<aside class="resources-panel">
+            <h2>IT Rep Resources</h2>
+
+<!-- OFFICE EXTENSION TRANSFER TABLE -->
+ <div class="extension-table-wrapper">
+    <table class="extension-table">
+        <thead>
+            <tr>
+            <th>Employee</th>
+            <th>Extension</th>
+
+            </tr>
+            </thead>
+
+        <tbody>
+            <tr>
+                <td>CITL Helpdesk</td>
+                <td>3675</td>
+            </tr>
+    
+            <tr>
+               <td>Emmie Gentry (Acuff)</td>
+               <td>3394</td>
+            </tr>
+
+            <tr>
+                <td>Lacy Means</td>
+                <td>6417</td>
+            </tr>
+
+            <tr>
+               <td>Taylor Chesson</td>
+               <td>Teams</td>
+            </tr>
+
+            <tr>
+                <td>Kassie Wallace</td>
+                <td>3908</td>
+            </tr>
+
+            <tr>
+                <td>Dr. Mallory Matthews</td>
+                <td>6951</td>
+            </tr>
+
+            <tr>
+                <td>Dr. Heather Rippetoe</td>
+                <td>3420</td>
+            </tr>
+
+            <tr>
+                <td>Mrs. Breanna Johnson</td>
+                <td>6745</td>
+            </tr>
+                            
+            <tr>
+                <td>Amy Phillips</td>
+                <td>Remote</td>
+            </tr>
+            </tbody>
+    </table>
+    </div>
+
+</div>
+    <!--Helpful Links -->
+            <div class="extension-table-wrapper">
+                    <table class="extension-table">
+                        <thead>
+                            <tr>
+                                <th>Helpful Links</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <a href="https://www.tntech.edu/citl/helpful-forms.php"
+                                       target="_blank" rel="noopener noreferrer">
+                                        Helpful Request Forms
+                                    </a>
+                                </td>
+                            </tr>
+                
+                            <tr>
+                                <td>
+                                    <a href="https://www.tntech.edu/citl/instructional-technology.php"
+                                       target="_blank" rel="noopener noreferrer">
+                                        Instructional Technology
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <a href="https://www.tntech.edu/citl/consultations.php"
+                                       target="_blank" rel="noopener noreferrer">
+                                        CITL Consultations
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <a href="https://community.canvaslms.com/"
+                                       target="_blank" rel="noopener noreferrer">
+                                        Canvas Community
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+
+            <div class="extension-table-wrapper">
+                    <table class="extension-table">
+                        <thead>
+                            <tr>
+                                <th>Instructional Designers</th>
+                                <th>ID College</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Dr. Mallory Matthews</td>
+                                <td>Agriculture & Human Ecology / Business</td>
+                            </tr>
+                            <tr>
+                                <td>Dr. Heather Rippetoee</td>
+                                <td>Education & Human Sciences /  Nursing / Arts & Sciences</td>
+                            </tr>
+                            <tr>
+                                <td>Breanna Johnson</td>
+                                <td>Emerging & Intergrative Studies / Engineering / Fine Arts</td>
+                            </tr>
+                    </table>
+            </div>
+
+            </p>
+        </aside>
+</aside>
+<!-- RIGHT SIDE: CALL RECORD FORM -->
+<section class="form-column">
+<div class="form-card">
+    <h2>Call Record Form</h2>
+    <p class="resource-note">Complete the fields below to create a support ticket.</p>
+
+    <form id="callRecordForm">
+        <fieldset class="question">
+<!--question 1 -->
+
+            <legend>1. Topic or Problem Area</legend>
+            <div class="button-group">
+                <button type="button" class="choice-button" data-group="topic" data-value="Canvas">Canvas</button>
+                <button type="button" class="choice-button" data-group="topic" data-value="Request Forms">Request Forms</button>
+                <button type="button" class="choice-button" data-group="topic" data-value="Other">Other</button>
+            </div>
+            <input type="hidden" id="topic" required>
+            <div id="otherTopicField" class="conditional-field hidden">
+                <label for="otherTopic">Specify the topic</label>
+                <input type="text" id="otherTopic" placeholder="Enter problem area">
+            </div>
+        </fieldset>
+<!--question 2 -->
+
+        <fieldset class="question">
+            <legend>2. Caller</legend>
+            <div class="button-group">
+                <button type="button" class="choice-button" data-group="caller" data-value="Student">Student</button>
+                <button type="button" class="choice-button" data-group="caller" data-value="Faculty">Faculty</button>
+            </div>
+            <input type="hidden" id="caller" required>
+            <div id="studentNumberField" class="conditional-field hidden">
+                <label for="studentNumber">Student T#</label>
+                <input type="text" id="studentNumber" placeholder="Enter student T#">
+            </div>
+        </fieldset>
+<!--question 3 -->
+        <div id="callerNameFields" class="question hidden">
+            <label for="firstName">3. First Name</label>
+            <input type="text" id="firstName" placeholder="Enter first name">
+            <div class="conditional-field">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" placeholder="Enter last name">
+            </div>
+        </div>
+
+<!--question 4 -->
+        <div class="question">
+            <label for="email">4. Email Address</label>
+            <input type="email" id="email" placeholder="Enter email address" required>
+        </div>
+
+<!--question 5 -->
+        <div class="question">
+            <label for="issue">5. Describe the Issue or Reason for the Call</label>
+            <textarea id="issue" placeholder="Describe the issue, error messages, and troubleshooting steps..." required></textarea>
+        </div>
+
+<!--question 6 -->
+        <fieldset class="question">
+            <legend>6. Current Status</legend>
+            <div class="button-group">
+                <button type="button" class="choice-button" data-group="status" data-value="Transferred Call">Transferred Call</button>
+                <button type="button" class="choice-button" data-group="status" data-value="Pending Assistance">Pending Assistance</button>
+                <button type="button" class="choice-button" data-group="status" data-value="Resolved">Resolved</button>
+            </div>
+            <input type="hidden" id="status" required>
+        </fieldset>
+    <!-- Question 7-->
+<div id="transferredToField" class="question conditional-field hidden">
+    <label for="transferredTo">7. Transferred to or Assisted By</label>
+    <select id="transferredTo">
+        <option value="">Select a staff member</option>
+        <option value="Lacy">Lacy</option>
+        <option value="Taylor">Taylor</option>
+        <option value="Emmie">Emmie</option>
+        <option value="Heather">Heather</option>
+        <option value="Mallory">Mallory</option>
+        <option value="Breanna">Breanna</option>
+        <option value="Kassie">Kassie</option>
+    </select>
+</div>        
+<!--Submission -->
+        <button type="submit" class="submit-button">Submit Call Record</button>
+        <p id="statusMessage" class="status-message" role="status" aria-live="polite"></p>
+    </form>
+
+</section>
+</main>
+
+<footer>CITL Form Fill — Internal Technology Support Prototype</footer>
+
+<script>
+const STORAGE_KEY = "citlTickets";
+
+document.querySelectorAll(".choice-button").forEach(button => {
+    button.addEventListener("click", function() {
+        const group = this.dataset.group;
+        const value = this.dataset.value;
+
+        document.querySelectorAll(
+            '.choice-button[data-group="' + group + '"]'
+        ).forEach(item => {
+            item.classList.remove("selected");
+            item.setAttribute("aria-pressed", "false");
+        });
+
+        this.classList.add("selected");
+        this.setAttribute("aria-pressed", "true");
+        document.getElementById(group).value = value;
+
+        if (group === "topic") {
+            const isOther = value === "Other";
+            document.getElementById("otherTopicField").classList.toggle("hidden", !isOther);
+            document.getElementById("otherTopic").required = isOther;
+            if (!isOther) document.getElementById("otherTopic").value = "";
+        }
+
+        if (group === "caller") {
+            const isStudent = value === "Student";
+            document.getElementById("studentNumberField").classList.toggle("hidden", !isStudent);
+            document.getElementById("studentNumber").required = isStudent;
+            if (!isStudent) document.getElementById("studentNumber").value = "";
+
+            document.getElementById("callerNameFields").classList.remove("hidden");
+            document.getElementById("firstName").required = true;
+            document.getElementById("lastName").required = true;
+        }
+        if (group === "status") {
+            const isTransferred = value === "Transferred Call";
+            document.getElementById("transferredToField").classList.toggle("hidden", !isTransferred);
+            document.getElementById("transferredTo").required = isTransferred;
+            if (!isTransferred) document.getElementById("transferredTo").value = "";
+        }
+    });
+});
+
+document.getElementById("callRecordForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    if (!this.reportValidity()) return;
+
+    let tickets = [];
+    try {
+        tickets = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        if (!Array.isArray(tickets)) tickets = [];
+    } catch (error) {
+        tickets = [];
+    }
+
+    const now = new Date();
+    const ticketNumber = "CITL-" + now.getTime();
+
+    const ticket = {
+        id: ticketNumber,
+        topic: document.getElementById("topic").value,
+        otherTopic: document.getElementById("otherTopic").value.trim(),
+        caller: document.getElementById("caller").value,
+        studentNumber: document.getElementById("studentNumber").value.trim(),
+        firstName: document.getElementById("firstName").value.trim(),
+        lastName: document.getElementById("lastName").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        issue: document.getElementById("issue").value.trim(),
+        status: document.getElementById("status").value,
+        status: document.getElementById("status").value,
+        transferredTo: document.getElementById("transferredTo").value,
+        createdAt: now.toISOString()
+    };
+
+    tickets.unshift(ticket);
+
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets));
+    } catch (error) {
+        document.getElementById("statusMessage").textContent =
+            "The ticket could not be saved in this browser.";
+        return;
+    }
+
+    document.getElementById("statusMessage").textContent =
+        "Ticket " + ticketNumber + " was saved. Open Submitted Reports to view it.";
+    document.getElementById("statusMessage").style.color = "#276749";
+
+    this.reset();
+    document.querySelectorAll(".choice-button").forEach(item => {
+        item.classList.remove("selected");
+        item.setAttribute("aria-pressed", "false");
+    });
+
+    ["topic", "caller", "status"].forEach(id => {
+        document.getElementById(id).value = "";
+    });
+
+    document.getElementById("otherTopicField").classList.add("hidden");
+    document.getElementById("studentNumberField").classList.add("hidden");
+    document.getElementById("callerNameFields").classList.add("hidden");
+    document.getElementById("otherTopic").required = false;
+    document.getElementById("studentNumber").required = false;
+    document.getElementById("firstName").required = false;
+    document.getElementById("lastName").required = false;
+    document.getElementById("transferredToField").classList.add("hidden");
+    document.getElementById("transferredTo").required = false;
+    document.getElementById("transferredTo").value = "";
+});
+</script>
+</body>
+</html>

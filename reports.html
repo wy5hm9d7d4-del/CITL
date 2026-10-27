@@ -1,0 +1,267 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submitted Reports | CITL</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f4f2f8;color:#292333}
+header{background:#4b2e83;color:white;padding:20px 30px;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+header h1{margin:0;font-size:26px}
+header p{margin:6px 0 0;font-size:14px}
+.nav-button{display:inline-block;background:white;color:#4b2e83;padding:11px 16px;border-radius:6px;text-decoration:none;font-weight:bold;font-size:14px}
+.nav-button:hover{background:#eee8f8}
+main{max-width:1400px;margin:28px auto;padding:0 20px}
+h2{color:#4b2e83}
+.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin:20px 0}
+.summary-card{background:white;padding:20px;border-radius:10px;box-shadow:0 3px 12px #0000000d}
+.summary-card p{margin:0 0 10px;color:#625a6d;font-size:14px}
+.summary-card strong{font-size:28px;color:#4b2e83}
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0}
+input,select{padding:11px;border:1px solid #cfc8dc;border-radius:6px;font:14px Arial;background:white}
+#searchInput{flex:1;min-width:190px}
+.table-card{background:white;border-radius:10px;padding:20px;box-shadow:0 3px 12px #0000000d;overflow:hidden}
+.table-wrapper{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:850px}
+th{background:#eee8f8;color:#38205f;text-align:left;font-size:13px}
+th,td{padding:13px 10px;border-bottom:1px solid #e7e1ef;vertical-align:top}
+td{font-size:13px;line-height:1.5}
+tr:hover td{background:#faf9fc}
+.ticket-id{font-weight:bold;color:#4b2e83;white-space:nowrap}
+.status-badge{display:inline-block;padding:5px 8px;border-radius:12px;font-size:11px;font-weight:bold;white-space:nowrap;background:#eee8f8;color:#4b2e83}
+.status-badge.Resolved{background:#e0f3e8;color:#216e45}
+.status-badge.Transferred-Call{background:#e4edff;color:#244d9b}
+.status-badge.Pending-Assistance{background:#fff0d5;color:#875500}
+.issue-cell{max-width:270px;white-space:pre-wrap;overflow-wrap:anywhere}
+.small-select{max-width:175px;width:100%;font-size:12px;padding:7px}
+.empty{text-align:center;padding:35px;color:#625a6d}
+footer{text-align:center;color:#625a6d;font-size:12px;padding:20px}
+@media(max-width:850px){.summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.summary{grid-template-columns:1fr}header{padding:20px}}
+</style>
+</head>
+<body>
+
+<header>
+    <div>
+        <h1>Submitted Reports</h1>
+        <p>CITL IT Support Ticket Dashboard</p>
+    </div>
+    <a class="nav-button" href="dashboard.html">← New Call Record</a>
+</header>
+
+<main>
+    <h2>Ticket Overview</h2>
+    <p>Review submitted calls, track their status, and find ticket details.</p>
+
+    <section class="summary">
+        <div class="summary-card">
+            <p>Total Tickets</p>
+            <strong id="totalCount">0</strong>
+        </div>
+        <div class="summary-card">
+            <p>Pending Assistance</p>
+            <strong id="pendingCount">0</strong>
+        </div>
+        <div class="summary-card">
+            <p>Transferred Calls</p>
+            <strong id="transferredCount">0</strong>
+        </div>
+        <div class="summary-card">
+            <p>Resolved Tickets</p>
+            <strong id="resolvedCount">0</strong>
+        </div>
+    </section>
+
+    <div class="toolbar">
+        <input type="text" id="searchInput"
+               placeholder="Search ticket, caller, email, or issue..."
+               aria-label="Search submitted tickets">
+
+        <select id="statusFilter" aria-label="Filter by status">
+            <option value="">All statuses</option>
+            <option value="Pending Assistance">Pending Assistance</option>
+            <option value="Transferred Call">Transferred Call</option>
+            <option value="Resolved">Resolved</option>
+        </select>
+
+        <select id="topicFilter" aria-label="Filter by topic">
+            <option value="">All topics</option>
+            <option value="Canvas">Canvas</option>
+            <option value="Request Forms">Request Forms</option>
+            <option value="Other">Other</option>
+        </select>
+    </div>
+
+    <section class="table-card">
+        <h2>All Tickets</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ticket ID / Date</th>
+                        <th>Caller</th>
+                        <th>Category</th>
+                        <th>Issue Description</th>
+                        <th>Assigned Staff</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="ticketRows"></tbody>
+            </table>
+        </div>
+        <div id="emptyMessage" class="empty hidden">
+            No submitted tickets match your filters.
+        </div>
+    </section>
+</main>
+
+<footer>CITL Form Fill — Submitted Reports</footer>
+
+<script>
+const STORAGE_KEY = "citlTickets";
+
+function getTickets() {
+    try {
+        const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        return Array.isArray(data) ? data : [];
+    } catch (error) {
+        return [];
+    }
+}
+
+function safeText(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+function formatDate(value) {
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? "Unknown date" : date.toLocaleString();
+}
+
+function statusClass(status) {
+    return String(status || "").replace(/\s+/g, "-");
+}
+
+function updateSummary(tickets) {
+    document.getElementById("totalCount").textContent = tickets.length;
+    document.getElementById("pendingCount").textContent =
+        tickets.filter(t => t.status === "Pending Assistance").length;
+    document.getElementById("transferredCount").textContent =
+        tickets.filter(t => t.status === "Transferred Call").length;
+    document.getElementById("resolvedCount").textContent =
+        tickets.filter(t => t.status === "Resolved").length;
+}
+
+function renderTickets() {
+    const tickets = getTickets();
+    updateSummary(tickets);
+
+    const search = document.getElementById("searchInput").value.toLowerCase().trim();
+    const statusFilter = document.getElementById("statusFilter").value;
+    const topicFilter = document.getElementById("topicFilter").value;
+
+    const filtered = tickets.filter(ticket => {
+        const caller = [ticket.firstName, ticket.lastName].filter(Boolean).join(" ");
+        const searchable = [
+            ticket.id, caller, ticket.email, ticket.issue, ticket.staffName,
+            ticket.topic, ticket.otherTopic, ticket.caller
+        ].join(" ").toLowerCase();
+
+        return searchable.includes(search)
+            && (!statusFilter || ticket.status === statusFilter)
+            && (!topicFilter || ticket.topic === topicFilter);
+    });
+
+    const rows = document.getElementById("ticketRows");
+    const emptyMessage = document.getElementById("emptyMessage");
+
+    rows.innerHTML = filtered.map(ticket => {
+        const callerName = [ticket.firstName, ticket.lastName]
+            .filter(Boolean).join(" ") || "Name not provided";
+        const category = ticket.topic === "Other" && ticket.otherTopic
+            ? "Other: " + ticket.otherTopic
+            : ticket.topic || "Unspecified";
+
+        return `
+            <tr>
+                <td>
+                    <div class="ticket-id">${safeText(ticket.id)}</div>
+                    <div>${safeText(formatDate(ticket.createdAt))}</div>
+                </td>
+                <td>
+                    <strong>${safeText(callerName)}</strong><br>
+                    ${safeText(ticket.caller || "")}<br>
+                    ${safeText(ticket.email || "")}
+                    ${ticket.studentNumber
+                        ? "<br>T#: " + safeText(ticket.studentNumber)
+                        : ""}
+                </td>
+                <td>${safeText(category)}</td>
+                <td class="issue-cell">${safeText(ticket.issue || "")}</td>
+                <td>${safeText(ticket.staffName || "")}</td>
+                <td>
+                    <span class="status-badge ${safeText(statusClass(ticket.status))}">
+                        ${safeText(ticket.status || "Unspecified")}
+                    </span>
+                    <br><br>
+                    <label>
+                        <span style="display:block;margin-bottom:5px">Update status</span>
+                        <select class="small-select status-editor"
+                                data-ticket-id="${safeText(ticket.id)}">
+                            <option value="Pending Assistance"
+                                ${ticket.status === "Pending Assistance" ? "selected" : ""}>
+                                Pending Assistance
+                            </option>
+                            <option value="Transferred Call"
+                                ${ticket.status === "Transferred Call" ? "selected" : ""}>
+                                Transferred Call
+                            </option>
+                            <option value="Resolved"
+                                ${ticket.status === "Resolved" ? "selected" : ""}>
+                                Resolved
+                            </option>
+                        </select>
+                    </label>
+                </td>
+            </tr>`;
+    }).join("");
+
+    emptyMessage.classList.toggle("hidden", filtered.length > 0);
+}
+
+document.getElementById("searchInput").addEventListener("input", renderTickets);
+document.getElementById("statusFilter").addEventListener("change", renderTickets);
+document.getElementById("topicFilter").addEventListener("change", renderTickets);
+
+document.getElementById("ticketRows").addEventListener("change", function(event) {
+    if (!event.target.classList.contains("status-editor")) return;
+
+    const ticketId = event.target.dataset.ticketId;
+    const tickets = getTickets();
+    const ticket = tickets.find(item => item.id === ticketId);
+
+    if (!ticket) return;
+
+    ticket.status = event.target.value;
+
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets));
+        renderTickets();
+    } catch (error) {
+        alert("The ticket status could not be saved in this browser.");
+    }
+});
+
+renderTickets();
+</script>
+</body>
+</html>
